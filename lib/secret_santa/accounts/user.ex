@@ -9,6 +9,9 @@ defmodule SecretSanta.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
 
+    has_many :group_memberships, SecretSanta.Groups.GroupMembership
+    has_many :groups, through: [:group_memberships, :group]
+
     timestamps()
   end
 

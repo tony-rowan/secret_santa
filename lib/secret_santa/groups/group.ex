@@ -1,4 +1,4 @@
-defmodule SecretSanta.Accounts.Group do
+defmodule SecretSanta.Groups.Group do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -7,14 +7,16 @@ defmodule SecretSanta.Accounts.Group do
     field :name, :string
     field :rules, :string
 
+    has_many :group_memberships, SecretSanta.Groups.GroupMembership
+    has_many :users, through: [:group_memberships, :user]
+
     timestamps()
   end
 
   @doc false
   def changeset(group, attrs) do
     group
-    |> cast(attrs, [:name, :rules, :join_code])
-    |> validate_required([:name, :rules, :join_code])
-    |> unique_constraint(:join_code)
+    |> cast(attrs, [:name, :rules])
+    |> validate_required([:name])
   end
 end

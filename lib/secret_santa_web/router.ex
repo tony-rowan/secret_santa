@@ -45,6 +45,18 @@ defmodule SecretSantaWeb.Router do
   ## Routes
 
   scope "/", SecretSantaWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    get "/", DashboardController, :show
+
+    resources "/groups", GroupController, only: [:new, :create, :edit, :update, :delete]
+
+    get "/users/settings", UserSettingsController, :edit
+    put "/users/settings", UserSettingsController, :update
+    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+  end
+
+  scope "/", SecretSantaWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     get "/users/register", UserRegistrationController, :new
@@ -58,17 +70,7 @@ defmodule SecretSantaWeb.Router do
   end
 
   scope "/", SecretSantaWeb do
-    pipe_through [:browser, :require_authenticated_user]
-
-    get "/users/settings", UserSettingsController, :edit
-    put "/users/settings", UserSettingsController, :update
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-  end
-
-  scope "/", SecretSantaWeb do
     pipe_through [:browser]
-
-    get "/", PageController, :index
 
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new
