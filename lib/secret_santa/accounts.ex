@@ -93,6 +93,31 @@ defmodule SecretSanta.Accounts do
     User.registration_changeset(user, attrs, hash_password: false)
   end
 
+  @doc """
+  Updates the user's personal details such as their name.
+
+  Does not update the user's authentication details such as
+  their email or password.
+  """
+  def update_user_details(%User{} = user, attrs \\ %{}) do
+    user
+    |> User.details_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user details.
+
+  ## Examples
+
+      iex> change_user_details(user)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_user_details(%User{} = user, attrs \\ %{}) do
+    User.details_changeset(user, attrs)
+  end
+
   ## Settings
 
   @doc """

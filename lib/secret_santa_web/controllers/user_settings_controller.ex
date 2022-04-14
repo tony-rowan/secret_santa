@@ -4,10 +4,25 @@ defmodule SecretSantaWeb.UserSettingsController do
   alias SecretSanta.Accounts
   alias SecretSantaWeb.UserAuth
 
-  plug :assign_email_and_password_changesets
+  plug :assign_form_changesets
 
   def edit(conn, _params) do
     render(conn, "edit.html")
+  end
+
+  def update(conn, %{"action" => "update_details"} = params) do
+    %{"user" => user_params} = params
+    user = conn.assigns.current_user
+
+    case Accounts.update_user_details(user, user_params) do
+      {:ok, applied_user} ->
+        conn
+        |> put_flash(:info, "Your name has been updated")
+        |> redirect(to: Routes.user_settings_path(conn, :edit))
+
+      {:error, changeset} ->
+        render(conn, "edit.html", details_changeset: changeset)
+    end
   end
 
   def update(conn, %{"action" => "update_email"} = params) do
@@ -64,10 +79,11 @@ defmodule SecretSantaWeb.UserSettingsController do
     end
   end
 
-  defp assign_email_and_password_changesets(conn, _opts) do
+  defp assign_form_changesets(conn, _opts) do
     user = conn.assigns.current_user
 
     conn
+    |> assign(:details_changeset, Accounts.change_user_details(user))
     |> assign(:email_changeset, Accounts.change_user_email(user))
     |> assign(:password_changeset, Accounts.change_user_password(user))
   end
