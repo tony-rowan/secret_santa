@@ -14,7 +14,7 @@ defmodule SecretSanta.Groups.GroupMembership do
   @doc false
   def changeset(group_membership, attrs) do
     group_membership
-    |> cast(attrs, [:role])
-    |> validate_required([:role])
+    |> cast(attrs, [:user_id, :group_id, :role])
+    |> validate_required([:user_id, :group_id, :role])
   end
 end

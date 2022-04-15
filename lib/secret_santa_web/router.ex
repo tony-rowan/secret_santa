@@ -50,6 +50,7 @@ defmodule SecretSantaWeb.Router do
     get "/", DashboardController, :show
 
     resources "/groups", GroupController, only: [:new, :create, :edit, :update, :delete]
+    resources "/group_memberships", GroupMembershipController, only: [:new, :create]
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update

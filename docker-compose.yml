@@ -5,5 +5,7 @@ services:
     image: postgres
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
