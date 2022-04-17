@@ -108,14 +108,14 @@ defmodule SecretSanta.Groups do
 
     if group do
       attrs = %{"user_id" => user.id, "group_id" => group.id, "role" => "member"}
-      %GroupMembership{}
-      |> GroupMembership.changeset(attrs)
+
+      GroupMembership.changeset(%GroupMembership{}, attrs)
       |> Repo.insert()
     else
       changeset =
         change_join_request(%JoinRequest{}, join_request_attrs)
         |> add_error(:join_code, "Join Code '%{join_code}' is not valid", join_code: join_code)
-      {:error, changeset}
+      {:error, %{changeset | action: :insert}}
     end
   end
 end
