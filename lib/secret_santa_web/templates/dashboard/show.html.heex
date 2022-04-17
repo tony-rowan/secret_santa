@@ -2,6 +2,11 @@
   <h3>Your Group</h3>
   <p><%= @group.name %></p>
   <p><%= @group.rules %></p>
+
+  <h4>Members</h4>
+  <%= for user <- @group.users do %>
+    <p><%= user.name %></p>
+  <% end %>
 <% else %>
   <h3>You don't have a Group!</h3>
   <p>You can either join one or create one</p>
