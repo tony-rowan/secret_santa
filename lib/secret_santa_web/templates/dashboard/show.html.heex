@@ -7,6 +7,17 @@
   <%= for user <- @group.users do %>
     <p><%= user.name %></p>
   <% end %>
+
+  <h3>Your Gift Ideas</h3>
+  <%= for idea <- @gift_ideas do %>
+    <p><%= idea.idea %></p>
+  <% end %>
+  <.form let={f} for={@gift_idea_changeset} action={Routes.gift_idea_path(@conn, :create)}>
+    <%= label f, :idea %>
+    <%= text_input f, :idea %>
+
+    <%= submit "Add Idea" %>
+  </.form>
 <% else %>
   <h3>You don't have a Group!</h3>
   <p>You can either join one or create one</p>

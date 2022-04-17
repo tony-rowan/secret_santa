@@ -1,0 +1,13 @@
+<h1>Show Gift idea</h1>
+
+<ul>
+
+  <li>
+    <strong>Idea:</strong>
+    <%= @gift_idea.idea %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.gift_idea_path(@conn, :edit, @gift_idea) %></span> |
+<span><%= link "Back", to: Routes.gift_idea_path(@conn, :index) %></span>

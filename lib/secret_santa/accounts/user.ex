@@ -11,6 +11,7 @@ defmodule SecretSanta.Accounts.User do
 
     has_many :group_memberships, SecretSanta.Groups.GroupMembership
     has_many :groups, through: [:group_memberships, :group]
+    has_many :gift_ideas, SecretSanta.GiftIdeas.GiftIdea
 
     timestamps()
   end
