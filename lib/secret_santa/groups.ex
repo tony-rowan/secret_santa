@@ -11,6 +11,7 @@ defmodule SecretSanta.Groups do
   alias SecretSanta.Groups.Group
   alias SecretSanta.Groups.GroupMembership
   alias SecretSanta.Groups.JoinRequest
+  alias SecretSanta.Groups.SecretSantaPair
 
   @doc """
   Gets a single group.
@@ -117,5 +118,47 @@ defmodule SecretSanta.Groups do
         |> add_error(:join_code, "Join Code '%{join_code}' is not valid", join_code: join_code)
       {:error, %{changeset | action: :insert}}
     end
+  end
+
+  def user_is_group_admin?(user_id, group_id) do
+    Repo.exists?(
+      from group_membership in GroupMembership,
+      where: group_membership.user_id == ^user_id,
+      where: group_membership.group_id == ^group_id,
+      where: group_membership.role == "admin"
+    )
+  end
+
+  def get_secret_santa_for_user(user_id, group_id) do
+    pairing = Repo.one(
+      from pair in SecretSantaPair,
+      where: pair.group_id == ^group_id,
+      where: pair.user_a_id == ^user_id,
+      preload: [user_b: [:gift_ideas]]
+    )
+
+    if pairing do
+      pairing.user_b
+    else
+      nil
+    end
+  end
+
+  def start_secret_santa(group) do
+    user_ids = Repo.all(
+      from group_membership in GroupMembership,
+      where: group_membership.group_id == ^group.id,
+      order_by: fragment("RANDOM()"),
+      select: group_membership.user_id
+    )
+
+    id_pairs = Enum.zip(user_ids, [List.last(user_ids) | user_ids])
+    pairs = id_pairs |> Enum.map fn {a, b} ->
+      %SecretSantaPair{user_a_id: a, user_b_id: b, group_id: group.id}
+    end
+
+    Group.changeset(group, %{})
+    |> put_assoc(:secret_santa_pairs, pairs)
+    |> Repo.update()
   end
 end

@@ -8,6 +8,21 @@
     <p><%= user.name %></p>
   <% end %>
 
+  <h4>Your Secret Santa</h4>
+  <%= if @secret_santa do %>
+    <p><%= @secret_santa.name %></p>
+    <%= for idea <- @secret_santa.gift_ideas do %>
+      <p><%= idea.idea %></p>
+    <% end %>
+  <% else %>
+    <p>Secret Santas have not been drawn, yet!</p>
+    <%= if @is_group_admin do %>
+      <%= button("Secret Santa!", to: Routes.secret_santa_path(@conn, :start)) %>
+    <% else %>
+      <p>Check back later when an admin has started Secret Santa</p>
+    <% end %>
+  <% end %>
+
   <h3>Your Gift Ideas</h3>
   <%= for idea <- @gift_ideas do %>
     <p><%= idea.idea %></p>
