@@ -1,37 +1,55 @@
 <%= if @group do %>
-  <h3>Your Group</h3>
-  <p><%= @group.name %></p>
-  <p><%= @group.rules %></p>
-
-  <h4>Members</h4>
-  <%= for user <- @group.users do %>
-    <p><%= user.name %></p>
-  <% end %>
-
-  <h4>Your Secret Santa</h4>
   <%= if @secret_santa do %>
-    <p><%= @secret_santa.name %></p>
-    <%= for idea <- @secret_santa.gift_ideas do %>
-      <p><%= idea.idea %></p>
-    <% end %>
+    <p class="text-xl text-center mb-8">
+      You have
+      <span class="text-3xl"><%= @secret_santa.name %></span>
+      for Secret Santa!
+    </p>
   <% else %>
-    <p>Secret Santas have not been drawn, yet!</p>
+    <p class="text-lg text-center mb-2">
+      Secret Santas have not been drawn, yet!
+    </p>
     <%= if @is_group_admin do %>
       <%= button("Secret Santa!", to: Routes.secret_santa_path(@conn, :start)) %>
     <% else %>
-      <p>Check back later when an admin has started Secret Santa</p>
+      <p class="text-lg text-center mb-2">
+        Check back later when an admin has started Secret Santa
+      </p>
     <% end %>
   <% end %>
 
-  <h3>Your Gift Ideas</h3>
-  <%= for idea <- @gift_ideas do %>
-    <p><%= idea.idea %></p>
-  <% end %>
-  <.form let={f} for={@gift_idea_changeset} action={Routes.gift_idea_path(@conn, :create)}>
-    <%= label f, :idea %>
-    <%= text_input f, :idea %>
+  <div class="mb-4">
+    <h3 class="mb-1">📏 Group Rules</h3>
+    <p><%= @group.rules %></p>
+  </div>
 
-    <%= submit "Add Idea" %>
+  <%= if @secret_santa do %>
+    <div class="mb-4">
+      <h3 class="mb-1">🎁 Their Gift Ideas</h3>
+      <%= if length(@secret_santa.gift_ideas) == 0 do %>
+        <p class="italic">They have not added any gift ideas yet</p>
+      <% end %>
+      <%= for idea <- @secret_santa.gift_ideas do %>
+        <p><%= idea.idea %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <h3 class="mb-1">🎁 Your Gift Ideas</h3>
+      <%= if length(@gift_ideas) == 0 do %>
+        <p class="italic">You have not added any gift ideas yet</p>
+      <% end %>
+    <%= for idea <- @gift_ideas do %>
+      <p><%= idea.idea %></p>
+    <% end %>
+  </div>
+
+  <p class="mb-1">Add gift ideas to help your secret santa</p>
+  <.form let={f} for={@gift_idea_changeset} action={Routes.gift_idea_path(@conn, :create)}>
+    <%= text_input f, :idea, class: "text-input mb-2" %>
+
+    <%= submit "Add Idea", class: "button" %>
   </.form>
 <% else %>
   <h3>You don't have a Group!</h3>

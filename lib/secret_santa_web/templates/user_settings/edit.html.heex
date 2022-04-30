@@ -1,8 +1,7 @@
-<h1>Settings</h1>
+<.form let={f} for={@details_changeset} action={Routes.user_settings_path(@conn, :update)}
+  id="update_details" class="mb-6">
+  <h3 class="mb-2">📝 Change Details</h3>
 
-<h3>Update Details</h3>
-
-<.form let={f} for={@details_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_details">
   <%= if @details_changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -11,18 +10,17 @@
 
   <%= hidden_input f, :action, name: "action", value: "update_details" %>
 
-  <%= label f, :name %>
-  <%= text_input f, :name, required: true %>
+  <%= label f, :name, class: "block" %>
+  <%= text_input f, :name, required: true, class: "text-input" %>
   <%= error_tag f, :name %>
 
-  <div>
-    <%= submit "Change Name" %>
-  </div>
+  <%= submit "Change Details", class: "button mt-4" %>
 </.form>
 
-<h3>Change email</h3>
+<.form let={f} for={@email_changeset} action={Routes.user_settings_path(@conn, :update)}
+  id="update_email" class="mb-6">
+  <h3 class="mb-2">✉️ Change email</h3>
 
-<.form let={f} for={@email_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_email">
   <%= if @email_changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -31,22 +29,23 @@
 
   <%= hidden_input f, :action, name: "action", value: "update_email" %>
 
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
+  <%= label f, :email, class: "block" %>
+  <%= email_input f, :email, required: true, class: "text-input mb-2" %>
   <%= error_tag f, :email %>
 
-  <%= label f, :current_password, for: "current_password_for_email" %>
-  <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email" %>
+  <%= label f, :current_password, for: "current_password_for_email", class: "block" %>
+  <%= password_input f, :current_password, required: true, name: "current_password",
+    id: "current_password_for_email", class: "text-input" %>
   <%= error_tag f, :current_password %>
 
-  <div>
-    <%= submit "Change email" %>
-  </div>
+  <%= submit "Change Email", class: "button mt-4" %>
 </.form>
 
-<h3>Change password</h3>
 
-<.form let={f} for={@password_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_password">
+<.form let={f} for={@password_changeset} action={Routes.user_settings_path(@conn, :update)}
+  id="update_password" class="mb-6">
+  <h3 class="mb-2">🔑 Change password</h3>
+
   <%= if @password_changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -55,19 +54,18 @@
 
   <%= hidden_input f, :action, name: "action", value: "update_password" %>
 
-  <%= label f, :password, "New password" %>
-  <%= password_input f, :password, required: true %>
+  <%= label f, :password, "New password", class: "block" %>
+  <%= password_input f, :password, required: true, class: "text-input mb-2" %>
   <%= error_tag f, :password %>
 
-  <%= label f, :password_confirmation, "Confirm new password" %>
-  <%= password_input f, :password_confirmation, required: true %>
+  <%= label f, :password_confirmation, "Confirm new password", class: "block" %>
+  <%= password_input f, :password_confirmation, required: true, class: "text-input mb-2" %>
   <%= error_tag f, :password_confirmation %>
 
-  <%= label f, :current_password, for: "current_password_for_password" %>
-  <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_password" %>
+  <%= label f, :current_password, for: "current_password_for_password", class: "block" %>
+  <%= password_input f, :current_password, required: true, name: "current_password",
+    id: "current_password_for_password", class: "text-input" %>
   <%= error_tag f, :current_password %>
 
-  <div>
-    <%= submit "Change password" %>
-  </div>
+  <%= submit "Change Password", class: "button mt-4" %>
 </.form>

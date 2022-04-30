@@ -1,30 +1,29 @@
-<h1>Create Account</h1>
+<h2 class="text-center mb-4">Create Account</h2>
 
-<.form let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}>
+<.form let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}
+  class="mb-4">
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
 
-  <%= label f, :name %>
-  <%= text_input f, :name, required: true %>
+  <%= label f, :name, class: "block" %>
+  <%= text_input f, :name, required: true, class: "text-input" %>
   <%= error_tag f, :name %>
 
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
+  <%= label f, :email, class: "block mt-2" %>
+  <%= email_input f, :email, required: true, class: "text-input" %>
   <%= error_tag f, :email %>
 
-  <%= label f, :password %>
-  <%= password_input f, :password, required: true %>
+  <%= label f, :password, class: "block mt-2" %>
+  <%= password_input f, :password, required: true, class: "text-input" %>
   <%= error_tag f, :password %>
 
-  <div>
-    <%= submit "Register" %>
-  </div>
+  <%= submit "Register", class: "button mt-4" %>
 </.form>
 
-<p>
+<p class="text-center">
   <%= link "Log in", to: Routes.user_session_path(@conn, :new) %> |
   <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
 </p>

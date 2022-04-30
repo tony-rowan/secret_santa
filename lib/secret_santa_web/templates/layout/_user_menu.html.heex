@@ -1,10 +1,16 @@
-<ul>
 <%= if @current_user do %>
-  <li><%= @current_user.name %></li>
-  <li><%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %></li>
-  <li><%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete %></li>
-<% else %>
-  <li><%= link "Register", to: Routes.user_registration_path(@conn, :new) %></li>
-  <li><%= link "Log in", to: Routes.user_session_path(@conn, :new) %></li>
+  <ul class="flex gap-x-4">
+    <li>
+      <%= link to: Routes.user_settings_path(@conn, :edit),
+        class: "text-white px-4 py-2 rounded bg-black bg-opacity-20 hover:bg-opacity-50" do %>
+        👤 <%= @current_user.name %>
+      <% end %>
+    </li>
+    <li>
+      <%= link to: Routes.user_session_path(@conn, :delete), method: :delete,
+        class: "text-white p-2 rounded hover:bg-red-700 hover:bg-opacity-50" do %>
+        🔓
+      <% end %>
+    </li>
+  </ul>
 <% end %>
-</ul>
