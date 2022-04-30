@@ -6,6 +6,7 @@ defmodule SecretSantaWeb.DashboardController do
 
   def show(conn, _params) do
     user = conn.assigns.current_user
+    IO.puts("Fetch Group")
     group = Groups.get_group_for_user(user) |> Groups.load_group_members()
     secret_santa = Groups.get_secret_santa_for_user(user, group)
     is_group_admin = Groups.user_is_group_admin?(user, group)

@@ -38,8 +38,9 @@ defmodule SecretSanta.Groups do
   end
 
   def get_group_for_user(user) do
-    Repo.one(from Group,
+    Repo.one(from group in Group,
       join: membership in GroupMembership,
+      on: membership.group_id == group.id,
       where: membership.user_id == ^user.id,
       order_by: membership.inserted_at,
       limit: 1
