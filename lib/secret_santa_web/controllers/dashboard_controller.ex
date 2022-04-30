@@ -3,13 +3,12 @@ defmodule SecretSantaWeb.DashboardController do
 
   alias SecretSanta.Groups
   alias SecretSanta.GiftIdeas
-  alias SecretSanta.Repo
 
   def show(conn, _params) do
     user = conn.assigns.current_user
-    group = Groups.get_group_for_user(user) |> Repo.preload(:users)
-    secret_santa = Groups.get_secret_santa_for_user(user.id, group.id)
-    is_group_admin = Groups.user_is_group_admin?(user.id, group.id)
+    group = Groups.get_group_for_user(user) |> Groups.load_group_members()
+    secret_santa = Groups.get_secret_santa_for_user(user, group)
+    is_group_admin = Groups.user_is_group_admin?(user, group)
     gift_ideas = GiftIdeas.list_gift_ideas_for_user(user)
 
     conn

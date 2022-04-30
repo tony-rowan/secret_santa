@@ -13,6 +13,10 @@ defmodule SecretSanta.Groups do
   alias SecretSanta.Groups.JoinRequest
   alias SecretSanta.Groups.SecretSantaPair
 
+  def load_group_members(group) do
+    group |> Repo.preload(:users)
+  end
+
   @doc """
   Gets a single group.
 
@@ -120,20 +124,28 @@ defmodule SecretSanta.Groups do
     end
   end
 
-  def user_is_group_admin?(user_id, group_id) do
+  def user_is_group_admin?(nil, _group), do: false
+
+  def user_is_group_admin?(_user, nil), do: false
+
+  def user_is_group_admin?(user, group) do
     Repo.exists?(
       from group_membership in GroupMembership,
-      where: group_membership.user_id == ^user_id,
-      where: group_membership.group_id == ^group_id,
+      where: group_membership.user_id == ^user.id,
+      where: group_membership.group_id == ^group.id,
       where: group_membership.role == "admin"
     )
   end
 
-  def get_secret_santa_for_user(user_id, group_id) do
+  def get_secret_santa_for_user(nil, _group), do: false
+
+  def get_secret_santa_for_user(_user, nil), do: false
+
+  def get_secret_santa_for_user(user, group) do
     pairing = Repo.one(
       from pair in SecretSantaPair,
-      where: pair.group_id == ^group_id,
-      where: pair.user_a_id == ^user_id,
+      where: pair.group_id == ^group.id,
+      where: pair.user_a_id == ^user.id,
       preload: [user_b: [:gift_ideas]]
     )
 
