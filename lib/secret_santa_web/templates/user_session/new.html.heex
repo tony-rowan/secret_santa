@@ -1,7 +1,7 @@
 <h2 class="text-center mb-4">Log In</h2>
 
 <.form let={f} for={@conn} action={Routes.user_session_path(@conn, :create)}
-  as={:user} class="mb-6">
+  as={:user} class="mb-8">
   <%= if @error_message do %>
     <div class="alert alert-danger">
       <p><%= @error_message %></p>
@@ -14,10 +14,10 @@
   <%= label f, :password, class: "block" %>
   <%= password_input f, :password, required: true, class: "text-input mb-2" %>
 
-  <%= submit "Log in", class: "button mt-2" %>
+  <%= submit "Log in", class: "button mt-4" %>
 </.form>
 
-<p class="text-center">
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
-</p>
+<%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new),
+  class: "button button--secondary mb-4" %>
+<%= link "Register", to: Routes.user_registration_path(@conn, :new),
+  class: "button button--secondary mb-4" %>

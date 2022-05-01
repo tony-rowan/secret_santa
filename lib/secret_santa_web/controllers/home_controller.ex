@@ -1,4 +1,4 @@
-defmodule SecretSantaWeb.DashboardController do
+defmodule SecretSantaWeb.HomeController do
   use SecretSantaWeb, :controller
 
   alias SecretSanta.Groups

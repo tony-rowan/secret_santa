@@ -47,7 +47,7 @@ defmodule SecretSantaWeb.Router do
   scope "/", SecretSantaWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/", DashboardController, :show
+    get "/home", HomeController, :show
 
     resources "/groups", GroupController, only: [:new, :create, :edit, :update, :delete]
     resources "/group_memberships", GroupMembershipController, only: [:new, :create]
@@ -64,6 +64,7 @@ defmodule SecretSantaWeb.Router do
   scope "/", SecretSantaWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
+    get "/", GetStartedController, :show
     get "/users/register", UserRegistrationController, :new
     post "/users/register", UserRegistrationController, :create
     get "/users/log_in", UserSessionController, :new

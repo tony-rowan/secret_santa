@@ -25,8 +25,12 @@
 
 @layer components {
   .button {
-    @apply px-4 py-2 border-2 border-emerald-400 rounded
+    @apply block w-fit px-6 py-2 border-2 border-emerald-400 rounded
       hover:bg-white hover:bg-opacity-20;
+  }
+
+  .button--secondary {
+    @apply px-4 py-2 border border-blue-400 text-sm;
   }
 
   .text-input {

@@ -1,0 +1,11 @@
+<h2 class="text-center mb-8">Welcome!</h2>
+
+<div class="mb-4">
+  <%= link("Log In", to: Routes.user_session_path(@conn, :new), class: "mx-auto button") %>
+</div>
+<div class="text-center mb-4">
+  or
+</div>
+<div class="mb-4">
+  <%= link("Register", to: Routes.user_registration_path(@conn, :new), class: "mx-auto button") %>
+</div>

@@ -1,13 +1,8 @@
 <h2 class="text-center mb-4">Forgot your password?</h2>
 
-<.form let={f} for={:user} action={Routes.user_reset_password_path(@conn, :create)} class="mb-4">
+<.form let={f} for={:user} action={Routes.user_reset_password_path(@conn, :create)} class="mb-8">
   <%= label f, :email, class: "block" %>
   <%= email_input f, :email, required: true, class: "text-input mb-2" %>
 
-  <%= submit "Send Password Reset Instructions", class: "button" %>
+  <%= submit "Send Password Reset Instructions", class: "button mt-4" %>
 </.form>
-
-<p class="text-center">
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
-</p>
