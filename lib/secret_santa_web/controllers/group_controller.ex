@@ -4,6 +4,14 @@ defmodule SecretSantaWeb.GroupController do
   alias SecretSanta.Groups
   alias SecretSanta.Groups.Group
 
+  def show(conn, %{"id" => id}) do
+    user = conn.assigns.current_user
+    group = Groups.get_group!(id) |> Groups.load_group_memberships()
+    is_group_admin = Groups.user_is_group_admin?(user, group)
+
+    render(conn, "show.html", group: group, is_group_admin: is_group_admin)
+  end
+
   def new(conn, _params) do
     changeset = Groups.change_group(%Group{})
     render(conn, "new.html", changeset: changeset)

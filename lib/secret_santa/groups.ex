@@ -17,6 +17,10 @@ defmodule SecretSanta.Groups do
     group |> Repo.preload(:users)
   end
 
+  def load_group_memberships(group) do
+    group |> Repo.preload(:group_memberships) |> Repo.preload(:users)
+  end
+
   @doc """
   Gets a single group.
 

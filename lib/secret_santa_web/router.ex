@@ -49,7 +49,7 @@ defmodule SecretSantaWeb.Router do
 
     get "/home", HomeController, :show
 
-    resources "/groups", GroupController, only: [:new, :create, :edit, :update, :delete]
+    resources "/groups", GroupController, only: [:show, :new, :create, :edit, :update, :delete]
     resources "/group_memberships", GroupMembershipController, only: [:new, :create]
 
     resources "/gift_ideas", GiftIdeaController, only: [:create, :delete]

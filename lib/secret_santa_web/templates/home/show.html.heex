@@ -1,9 +1,9 @@
 <%= if @group do %>
   <%= if @secret_santa do %>
-    <p class="text-xl text-center mb-8">
-      You have
-      <span class="text-3xl"><%= @secret_santa.name %></span>
-      for Secret Santa!
+    <p class="text-xl text-center mb-4">
+      You are
+      <span class="text-3xl"><%= @secret_santa.name %></span>'s
+      Secret Santa!
     </p>
   <% else %>
     <p class="text-lg text-center mb-2">
@@ -17,6 +17,12 @@
       </p>
     <% end %>
   <% end %>
+
+  <p class="text-center mb-8">
+    You are part of the
+    <%= link(@group.name, to: Routes.group_path(@conn, :show, @group), class: "text-xl underline") %>
+    secret santa group
+  </p>
 
   <div class="mb-4">
     <h3 class="mb-1">📏 Group Rules</h3>
