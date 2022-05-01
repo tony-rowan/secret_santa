@@ -20,7 +20,11 @@
 
   <div class="mb-4">
     <h3 class="mb-1">📏 Group Rules</h3>
-    <p><%= @group.rules %></p>
+    <%= if @group.rules do %>
+      <p><%= @group.rules %></p>
+    <% else %>
+      <p class="italic">There are no group rules</p>
+    <% end %>
   </div>
 
   <%= if @secret_santa do %>
