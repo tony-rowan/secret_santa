@@ -1,28 +1,30 @@
 <%= if @group do %>
-  <%= if @secret_santa do %>
-    <p class="text-xl text-center mb-4">
-      You are
-      <span class="text-3xl"><%= @secret_santa.name %></span>'s
-      Secret Santa!
-    </p>
-  <% else %>
-    <p class="text-lg text-center mb-2">
-      Secret Santas have not been drawn, yet!
-    </p>
-    <%= if @is_group_admin do %>
-      <%= button("Secret Santa!", to: Routes.secret_santa_path(@conn, :start)) %>
-    <% else %>
-      <p class="text-lg text-center mb-2">
-        Check back later when an admin has started Secret Santa
-      </p>
-    <% end %>
-  <% end %>
-
-  <p class="text-center mb-8">
+  <p class="text-center mb-6">
     You are part of the
     <%= link(@group.name, to: Routes.group_path(@conn, :show, @group), class: "text-xl underline") %>
     secret santa group
   </p>
+
+  <div class="mb-8">
+    <%= if @secret_santa do %>
+      <p class="text-2xl text-center">
+        You are
+        <span class="text-3xl"><%= @secret_santa.name %></span>'s
+        Secret Santa!
+      </p>
+    <% else %>
+      <p class="text-lg text-center mb-2">
+        Secret Santas have not been drawn, yet!
+      </p>
+      <%= if @is_group_admin do %>
+        <%= button("Start Secret Santa!", to: Routes.secret_santa_path(@conn, :start), class: "button mx-auto") %>
+      <% else %>
+        <p class="text-lg text-center">
+          Check back later when an admin has started Secret Santa
+        </p>
+      <% end %>
+    <% end %>
+  </div>
 
   <div class="mb-4">
     <h3 class="mb-1">📏 Group Rules</h3>
