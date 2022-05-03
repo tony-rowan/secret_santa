@@ -16,7 +16,7 @@ defmodule SecretSantaWeb.GroupMembershipController do
       {:ok, group_membership} ->
         conn
         |> put_flash(:info, "Group joined successfully.")
-        |> redirect(to: Routes.dashboard_path(conn, :show))
+        |> redirect(to: Routes.home_path(conn, :show))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

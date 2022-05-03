@@ -64,8 +64,18 @@
     <%= submit "Add Idea", class: "button" %>
   </.form>
 <% else %>
-  <h3>You don't have a Group!</h3>
-  <p>You can either join one or create one</p>
-  <%= link("Create", to: Routes.group_path(@conn, :new)) %>
-  <%= link("Join", to: Routes.group_membership_path(@conn, :new)) %>
+  <div class="mb-6">
+    <h3 class="text-center">You don't have a Group!</h3>
+    <p class="text-center">You can either join an existing group or create a new one.</p>
+  </div>
+
+  <div class="mb-4">
+    <%= link("Join a Group", to: Routes.group_path(@conn, :new), class: "mx-auto button") %>
+  </div>
+  <div class="text-center mb-4">
+    or
+  </div>
+  <div class="mb-4">
+    <%= link("Create a Group", to: Routes.group_membership_path(@conn, :new), class: "mx-auto button") %>
+  </div>
 <% end %>

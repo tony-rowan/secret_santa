@@ -24,7 +24,7 @@ defmodule SecretSantaWeb.GroupController do
       {:ok, group} ->
         conn
         |> put_flash(:info, "Group created successfully.")
-        |> redirect(to: Routes.dashboard_path(conn, :show))
+        |> redirect(to: Routes.home_path(conn, :show))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -44,7 +44,7 @@ defmodule SecretSantaWeb.GroupController do
       {:ok, group} ->
         conn
         |> put_flash(:info, "Group updated successfully.")
-        |> redirect(to: Routes.dashboard_path(conn, :show))
+        |> redirect(to: Routes.home_path(conn, :show))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", group: group, changeset: changeset)
@@ -57,6 +57,6 @@ defmodule SecretSantaWeb.GroupController do
 
     conn
     |> put_flash(:info, "Group deleted successfully.")
-    |> redirect(to: Routes.dashboard_path(conn, :show))
+    |> redirect(to: Routes.home_path(conn, :show))
   end
 end
