@@ -161,7 +161,7 @@ defmodule SecretSanta.Groups do
     end
   end
 
-  def start_secret_santa(group) do
+  def start_secret_santa(%Group{} = group) do
     user_ids = Repo.all(
       from group_membership in GroupMembership,
       where: group_membership.group_id == ^group.id,
@@ -169,8 +169,17 @@ defmodule SecretSanta.Groups do
       select: group_membership.user_id
     )
 
-    id_pairs = Enum.zip(user_ids, [List.last(user_ids) | user_ids])
-    pairs = id_pairs |> Enum.map fn {a, b} ->
+    group |> start_secret_santa(user_ids)
+  end
+
+  defp start_secret_santa(%Group{} = group, group_member_ids) do
+    {:error, "You cannot start Secret Santa with only one member"}
+  end
+
+  defp start_secret_santa(%Group{} = group, group_member_ids) do
+    pairs = group_member_ids
+    |> Enum.zip([List.last(group_member_ids) | group_member_ids])
+    |> Enum.map fn {a, b} ->
       %SecretSantaPair{user_a_id: a, user_b_id: b, group_id: group.id}
     end
 

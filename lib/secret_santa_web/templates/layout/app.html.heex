@@ -1,9 +1,9 @@
 <main class="max-w-screen-md mx-auto px-4">
   <p role="alert"
-    class="p-2 text-white text-md bg-blue-300 empty:hidden"
+  class="rounded px-8 py-2 text-white text-md border-2 border-blue-500 bg-blue-300 mb-4 text-center w-fit mx-auto empty:hidden"
   ><%= get_flash(@conn, :info) %></p>
   <p role="alert"
-    class="p-2 text-white text-md bg-red-300 empty:hidden"
+    class="rounded px-8 py-2 text-white text-md border-2 border-red-500 bg-red-300 mb-4 text-center w-fit mx-auto empty:hidden"
   ><%= get_flash(@conn, :error) %></p>
 
   <%= @inner_content %>
