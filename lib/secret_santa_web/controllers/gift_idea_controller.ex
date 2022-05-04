@@ -10,11 +10,13 @@ defmodule SecretSantaWeb.GiftIdeaController do
       {:ok, gift_idea} ->
         conn
         |> put_flash(:info, "Gift idea added successfully.")
-        |> redirect(to: Routes.dashboard_path(conn, :show))
+        |> redirect(to: Routes.home_path(conn, :show))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
+        conn
+        |> put_flash(:error, "There was an error adding your gift idea")
+        |> redirect(to: Routes.home_path(conn, :show))
+      end
   end
 
   def delete(conn, %{"id" => id}) do
@@ -23,6 +25,6 @@ defmodule SecretSantaWeb.GiftIdeaController do
 
     conn
     |> put_flash(:info, "Gift idea deleted successfully.")
-    |> redirect(to: Routes.dashboard_path(conn, :index))
+    |> redirect(to: Routes.home_path(conn, :index))
   end
 end

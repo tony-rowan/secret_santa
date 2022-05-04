@@ -59,7 +59,7 @@
 
   <p class="mb-1">Add gift ideas to help your secret santa</p>
   <.form let={f} for={@gift_idea_changeset} action={Routes.gift_idea_path(@conn, :create)}>
-    <%= text_input f, :idea, class: "text-input mb-2" %>
+    <%= text_input f, :idea, required: true, class: "text-input mb-2" %>
 
     <%= submit "Add Idea", class: "button" %>
   </.form>
