@@ -41,4 +41,17 @@
     @apply px-4 py-2 border-2 border-blue-400 rounded bg-white bg-opacity-25
       block w-full;
   }
+
+  .alert {
+    @apply rounded px-8 py-2 border-2 mb-4 text-center w-fit mx-auto empty:hidden;
+
+  }
+
+  .alert--info {
+    @apply border-blue-500 bg-blue-300;
+  }
+
+  .alert--error {
+    @apply border-red-500 bg-red-300;
+  }
 }

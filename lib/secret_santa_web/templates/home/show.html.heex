@@ -70,12 +70,12 @@
   </div>
 
   <div class="mb-4">
-    <%= link("Join a Group", to: Routes.group_path(@conn, :new), class: "mx-auto button") %>
+    <%= link("Join a Group", to: Routes.group_membership_path(@conn, :new), class: "mx-auto button") %>
   </div>
   <div class="text-center mb-4">
     or
   </div>
   <div class="mb-4">
-    <%= link("Create a Group", to: Routes.group_membership_path(@conn, :new), class: "mx-auto button") %>
+    <%= link("Create a Group", to: Routes.group_path(@conn, :new), class: "mx-auto button") %>
   </div>
 <% end %>
