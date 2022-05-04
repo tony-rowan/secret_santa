@@ -1,6 +1,16 @@
 <h2 class="text-center mb-4"><%= @group.name %></h2>
 
 <div class="mb-4">
+  <h3 class="mb-2">📏 Rules</h3>
+  <%= if @group.rules do %>
+    <p><%= @group.rules %></p>
+  <% else %>
+    <p class="italic">There are no group rules</p>
+  <% end %>
+</div>
+
+
+<div class="mb-4">
   <h3 class="mb-2">👤 Members</h3>
   <%= for membership <- @group.group_memberships do %>
     <p>
@@ -14,19 +24,13 @@
 </div>
 
 <div class="mb-4">
-  <h3 class="mb-2">📏 Rules</h3>
-  <%= if @group.rules do %>
-    <p><%= @group.rules %></p>
-  <% else %>
-    <p class="italic">There are no group rules</p>
-  <% end %>
+  Use <span class="text-lg uppercase"><%= @group.join_code %></span> to invite members.
 </div>
 
-
 <%= if @is_group_admin do %>
-<%= link("Edit Group", to: Routes.group_path(@conn, :edit, @group),
-  class: "button mb-4") %>
+  <%= link("Edit Group", to: Routes.group_path(@conn, :edit, @group),
+    class: "button mb-4") %>
 
-<%= button("Delete Group", to: Routes.group_path(@conn, :delete, @group), method: :destroy,
-  class: "button button--danger mb-4") %>
+  <%= button("Delete Group", to: Routes.group_path(@conn, :delete, @group), method: :destroy,
+    class: "button button--danger mb-4") %>
 <% end %>
