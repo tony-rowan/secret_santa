@@ -65,6 +65,7 @@ defmodule SecretSantaWeb.Router do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     get "/", GetStartedController, :show
+    get "/join/:join_code", JoinController, :show
     get "/users/register", UserRegistrationController, :new
     post "/users/register", UserRegistrationController, :create
     get "/users/log_in", UserSessionController, :new

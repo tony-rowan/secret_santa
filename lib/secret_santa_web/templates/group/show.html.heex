@@ -24,13 +24,17 @@
 </div>
 
 <div class="mb-4">
-  Use <span class="text-lg uppercase"><%= @group.join_code %></span> to invite members.
+  <%= link("Invite Members", to: Routes.join_path(@conn, :show, @group.join_code), class: "button mb-2") %>
+  <p>Alternatively, tell your friends to use the join code <span class="text-lg uppercase"><%= @group.join_code %></span> after they register.</p>
 </div>
 
 <%= if @is_group_admin do %>
-  <%= link("Edit Group", to: Routes.group_path(@conn, :edit, @group),
-    class: "button mb-4") %>
+  <div class="mb-4">
+    <h3 class="mb-2">⚙️ Actions</h3>
+    <%= link("Edit Group", to: Routes.group_path(@conn, :edit, @group),
+      class: "button mb-4") %>
 
-  <%= button("Delete Group", to: Routes.group_path(@conn, :delete, @group), method: :destroy,
-    class: "button button--danger mb-4") %>
+    <%= button("Delete Group", to: Routes.group_path(@conn, :delete, @group), method: :destroy,
+      class: "button button--danger mb-4") %>
+  </div>
 <% end %>
