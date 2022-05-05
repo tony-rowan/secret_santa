@@ -172,7 +172,7 @@ defmodule SecretSanta.Groups do
     group |> start_secret_santa(user_ids)
   end
 
-  defp start_secret_santa(%Group{} = group, group_member_ids) do
+  defp start_secret_santa(%Group{} = group, [_]) do
     {:error, "You cannot start Secret Santa with only one member"}
   end
 

@@ -1,6 +1,6 @@
 <main class="max-w-screen-md mx-auto px-4">
   <p role="alert" class="alert alert--info"><%= get_flash(@conn, :info) %></p>
-  <p role="alert"class="alert alert--danger"><%= get_flash(@conn, :error) %></p>
+  <p role="alert"class="alert alert--error"><%= get_flash(@conn, :error) %></p>
 
   <%= @inner_content %>
 </main>
