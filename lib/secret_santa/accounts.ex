@@ -4,9 +4,12 @@ defmodule SecretSanta.Accounts do
   """
 
   import Ecto.Query, warn: false
+  import Ecto.Changeset
+
   alias SecretSanta.Repo
 
   alias SecretSanta.Accounts.{User, UserToken, UserNotifier}
+  alias SecretSanta.Groups.{Group, GroupMembership}
 
   ## Database getters
 
@@ -74,9 +77,16 @@ defmodule SecretSanta.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
-  def register_user(attrs) do
+  def register_user(attrs, nil) do
     %User{}
     |> User.registration_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def register_user(attrs, %Group{} = group) do
+    %User{}
+    |> User.registration_changeset(attrs)
+    |> put_assoc(:group_memberships, [%GroupMembership{group_id: group.id, role: "member"}])
     |> Repo.insert()
   end
 

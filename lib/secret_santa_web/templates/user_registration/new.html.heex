@@ -1,4 +1,9 @@
-<h2 class="text-center mb-4">Create Account</h2>
+<div class="text-center mb-4">
+  <h2>Create Account</h2>
+  <%= if @group do %>
+    <p>You are joining the <span class="font-bold text-xl"><%= @group.name %></span> Secret Santa Group</p>
+  <% end %>
+</div>
 
 <.form let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}
   class="mb-8">
@@ -6,6 +11,10 @@
     <div class="alert alert--error">
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
+  <% end %>
+
+  <%= if @group do %>
+    <%= hidden_input f, :group, value: @group.id %>
   <% end %>
 
   <%= label f, :name, class: "block" %>
