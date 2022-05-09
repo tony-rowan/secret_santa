@@ -1,40 +1,35 @@
 defmodule SecretSantaWeb.GroupControllerTest do
   use SecretSantaWeb.ConnCase
 
-  import SecretSanta.AccountsFixtures
+  import SecretSanta.GroupsFixtures
 
-  @create_attrs %{join_code: "some join_code", name: "some name", rules: "some rules"}
-  @update_attrs %{join_code: "some updated join_code", name: "some updated name", rules: "some updated rules"}
-  @invalid_attrs %{join_code: nil, name: nil, rules: nil}
+  setup :register_and_log_in_user
 
-  describe "index" do
-    test "lists all groups", %{conn: conn} do
-      conn = get(conn, Routes.group_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Groups"
-    end
-  end
+  @create_attrs %{name: "Group Name", rules: "Group Rules"}
+  @update_attrs %{name: "Updated Group Name", rules: "Updated Group Rules"}
+  @invalid_attrs %{name: nil, rules: nil}
 
   describe "new group" do
     test "renders form", %{conn: conn} do
       conn = get(conn, Routes.group_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Group"
+      assert html_response(conn, 200) =~ "Create a New Group"
     end
   end
 
   describe "create group" do
-    test "redirects to show when data is valid", %{conn: conn} do
+    test "redirects to homepage when data is valid", %{conn: conn} do
       conn = post(conn, Routes.group_path(conn, :create), group: @create_attrs)
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.group_path(conn, :show, id)
+      assert redirected_to(conn) == Routes.home_path(conn, :show)
 
-      conn = get(conn, Routes.group_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Group"
+      conn = get(conn, Routes.home_path(conn, :show))
+      assert html_response(conn, 200) =~ "Group Name"
+      assert html_response(conn, 200) =~ "Group Rules"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.group_path(conn, :create), group: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Group"
+      assert html_response(conn, 200) =~ "Create a New Group"
     end
   end
 
@@ -48,14 +43,19 @@ defmodule SecretSantaWeb.GroupControllerTest do
   end
 
   describe "update group" do
-    setup [:create_group]
+    setup %{user: user} do
+      group = group_fixture(%{admin: user})
+      %{group: group}
+    end
 
     test "redirects when data is valid", %{conn: conn, group: group} do
       conn = put(conn, Routes.group_path(conn, :update, group), group: @update_attrs)
-      assert redirected_to(conn) == Routes.group_path(conn, :show, group)
 
-      conn = get(conn, Routes.group_path(conn, :show, group))
-      assert html_response(conn, 200) =~ "some updated join_code"
+      assert redirected_to(conn) == Routes.home_path(conn, :show)
+
+      conn = get(conn, Routes.home_path(conn, :show))
+      assert html_response(conn, 200) =~ "Updated Group Name"
+      assert html_response(conn, 200) =~ "Updated Group Rules"
     end
 
     test "renders errors when data is invalid", %{conn: conn, group: group} do
@@ -69,7 +69,7 @@ defmodule SecretSantaWeb.GroupControllerTest do
 
     test "deletes chosen group", %{conn: conn, group: group} do
       conn = delete(conn, Routes.group_path(conn, :delete, group))
-      assert redirected_to(conn) == Routes.group_path(conn, :index)
+      assert redirected_to(conn) == Routes.home_path(conn, :show)
 
       assert_error_sent 404, fn ->
         get(conn, Routes.group_path(conn, :show, group))

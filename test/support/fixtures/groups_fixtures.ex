@@ -2,14 +2,11 @@ defmodule SecretSanta.GroupsFixtures do
 
   alias SecretSanta.Groups
 
-  def unique_group_join_code, do: "join_code_#{System.unique_integer([:positive])}"
-
   def group_fixture(attrs \\ %{}) do
-    user = SecretSanta.AccountsFixtures.user_fixture()
+    {admin, attrs} = Map.pop(attrs, :admin, SecretSanta.AccountsFixtures.user_fixture())
 
     {:ok, group} =
-      Groups.create_group(user, Enum.into(attrs, %{
-        join_code: unique_group_join_code(),
+      Groups.create_group(admin, Enum.into(attrs, %{
         name: "Group Name",
         rules: "Group Rules"
       }))
