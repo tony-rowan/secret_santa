@@ -1,15 +1,14 @@
 defmodule SecretSantaWeb.SecretSantaController do
   use SecretSantaWeb, :controller
 
-  alias SecretSanta.Repo
-
   alias SecretSanta.Groups
+  alias SecretSanta.Gifting
 
   def start(conn, _params) do
     user = conn.assigns.current_user
-    group = Groups.get_group_for_user(user) |> Repo.preload(:mappings)
+    group = Groups.get_group_for_user(user)
 
-    case Groups.start_secret_santa(group) do
+    case Gifting.start_secret_santa(group) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Secret Santa has been started!")

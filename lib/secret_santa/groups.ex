@@ -169,31 +169,4 @@ defmodule SecretSanta.Groups do
       nil
     end
   end
-
-  def start_secret_santa(%Group{} = group) do
-    user_ids = Repo.all(
-      from group_membership in GroupMembership,
-      where: group_membership.group_id == ^group.id,
-      order_by: fragment("RANDOM()"),
-      select: group_membership.user_id
-    )
-
-    group |> start_secret_santa(user_ids)
-  end
-
-  defp start_secret_santa(%Group{}, [_]) do
-    {:error, "You cannot start Secret Santa with only one member"}
-  end
-
-  defp start_secret_santa(%Group{} = group, group_member_ids) do
-    mapping = group_member_ids
-    |> Enum.zip([List.last(group_member_ids) | group_member_ids])
-    |> Enum.map(fn {from, to} ->
-      %Mapping{user_id: from, recipient_id: to, group_id: group.id}
-    end)
-
-    Group.changeset(group, %{})
-    |> put_assoc(:mappings, mapping)
-    |> Repo.update()
-  end
 end
