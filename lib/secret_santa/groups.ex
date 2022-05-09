@@ -7,11 +7,8 @@ defmodule SecretSanta.Groups do
   import Ecto.Changeset
 
   alias SecretSanta.Repo
-
-  alias SecretSanta.Groups.Group
-  alias SecretSanta.Groups.GroupMembership
-  alias SecretSanta.Groups.JoinRequest
-  alias SecretSanta.Groups.SecretSantaPair
+  alias SecretSanta.Accounts.User
+  alias SecretSanta.Groups.{Group, GroupMembership, JoinRequest, SecretSantaPair}
 
   def load_group_members(group) do
     group |> Repo.preload(:users)
@@ -114,6 +111,12 @@ defmodule SecretSanta.Groups do
     Group.changeset(group, attrs)
   end
 
+  def create_group_membership(%Group{} = group, %User{} = user, role \\ "member") do
+    %GroupMembership{}
+    |> GroupMembership.changeset(%{group_id: group.id, user_id: user.id, role: role})
+    |> Repo.insert()
+  end
+
   def change_join_request(%JoinRequest{} = join_request, attrs \\ %{}) do
     JoinRequest.changeset(join_request, attrs)
   end
@@ -177,16 +180,16 @@ defmodule SecretSanta.Groups do
     group |> start_secret_santa(user_ids)
   end
 
-  defp start_secret_santa(%Group{} = group, [_]) do
+  defp start_secret_santa(%Group{}, [_]) do
     {:error, "You cannot start Secret Santa with only one member"}
   end
 
   defp start_secret_santa(%Group{} = group, group_member_ids) do
     pairs = group_member_ids
     |> Enum.zip([List.last(group_member_ids) | group_member_ids])
-    |> Enum.map fn {a, b} ->
+    |> Enum.map(fn {a, b} ->
       %SecretSantaPair{user_a_id: a, user_b_id: b, group_id: group.id}
-    end
+    end)
 
     Group.changeset(group, %{})
     |> put_assoc(:secret_santa_pairs, pairs)

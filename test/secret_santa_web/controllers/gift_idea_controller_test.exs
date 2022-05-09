@@ -3,82 +3,46 @@ defmodule SecretSantaWeb.GiftIdeaControllerTest do
 
   import SecretSanta.GiftIdeasFixtures
 
-  @create_attrs %{idea: "some idea"}
-  @update_attrs %{idea: "some updated idea"}
+  setup :setup_member_user
+
+  @create_attrs %{idea: "Some Gift Idea"}
   @invalid_attrs %{idea: nil}
-
-  describe "index" do
-    test "lists all gift_ideas", %{conn: conn} do
-      conn = get(conn, Routes.gift_idea_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Gift ideas"
-    end
-  end
-
-  describe "new gift_idea" do
-    test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.gift_idea_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Gift idea"
-    end
-  end
 
   describe "create gift_idea" do
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, Routes.gift_idea_path(conn, :create), gift_idea: @create_attrs)
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.gift_idea_path(conn, :show, id)
+      assert redirected_to(conn) == Routes.home_path(conn, :show)
 
-      conn = get(conn, Routes.gift_idea_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Gift idea"
+      conn = get(conn, Routes.home_path(conn, :show))
+
+      assert html_response(conn, 200) =~ "Some Gift Idea"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.gift_idea_path(conn, :create), gift_idea: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Gift idea"
-    end
-  end
 
-  describe "edit gift_idea" do
-    setup [:create_gift_idea]
+      assert redirected_to(conn) == Routes.home_path(conn, :show)
 
-    test "renders form for editing chosen gift_idea", %{conn: conn, gift_idea: gift_idea} do
-      conn = get(conn, Routes.gift_idea_path(conn, :edit, gift_idea))
-      assert html_response(conn, 200) =~ "Edit Gift idea"
-    end
-  end
+      conn = get(conn, Routes.home_path(conn, :show))
 
-  describe "update gift_idea" do
-    setup [:create_gift_idea]
-
-    test "redirects when data is valid", %{conn: conn, gift_idea: gift_idea} do
-      conn = put(conn, Routes.gift_idea_path(conn, :update, gift_idea), gift_idea: @update_attrs)
-      assert redirected_to(conn) == Routes.gift_idea_path(conn, :show, gift_idea)
-
-      conn = get(conn, Routes.gift_idea_path(conn, :show, gift_idea))
-      assert html_response(conn, 200) =~ "some updated idea"
-    end
-
-    test "renders errors when data is invalid", %{conn: conn, gift_idea: gift_idea} do
-      conn = put(conn, Routes.gift_idea_path(conn, :update, gift_idea), gift_idea: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Edit Gift idea"
+      refute html_response(conn, 200) =~ "Some Gift Idea"
     end
   end
 
   describe "delete gift_idea" do
-    setup [:create_gift_idea]
+    test "deletes chosen gift_idea", %{conn: conn, user: user} do
+      gift_idea = gift_idea_fixture(%{user: user, idea: "Some Gift Idea"})
 
-    test "deletes chosen gift_idea", %{conn: conn, gift_idea: gift_idea} do
       conn = delete(conn, Routes.gift_idea_path(conn, :delete, gift_idea))
-      assert redirected_to(conn) == Routes.gift_idea_path(conn, :index)
 
-      assert_error_sent 404, fn ->
-        get(conn, Routes.gift_idea_path(conn, :show, gift_idea))
-      end
+      assert redirected_to(conn) == Routes.home_path(conn, :show)
+
+      conn = get(conn, Routes.home_path(conn, :show))
+
+      response = html_response(conn, 200)
+        assert response =~ "🚮 Gift idea deleted!"
+      refute response =~ "Some Gift Idea"
     end
-  end
-
-  defp create_gift_idea(_) do
-    gift_idea = gift_idea_fixture()
-    %{gift_idea: gift_idea}
   end
 end

@@ -38,6 +38,36 @@ defmodule SecretSantaWeb.ConnCase do
   end
 
   @doc """
+  Setup helper that registers and logs in a user and creates a
+  group of which they are an admin.
+
+      setup :setup_admin_user
+
+  It stores an updated connection, the newly registered user
+  and the group in the test context.
+  """
+  def setup_admin_user(%{conn: conn}) do
+    user = SecretSanta.AccountsFixtures.user_fixture()
+    group = SecretSanta.GroupsFixtures.group_fixture(%{admin: user})
+    %{conn: log_in_user(conn, user), user: user, group: group}
+  end
+
+  @doc """
+  Setup helper that registers and logs in a user and creates a
+  group of which they are a member.
+
+      setup :setup_member_user
+
+  It stores an updated connection, the newly registered user
+  and the group in the test context.
+  """
+  def setup_member_user(%{conn: conn}) do
+    user = SecretSanta.AccountsFixtures.user_fixture()
+    group = SecretSanta.GroupsFixtures.group_fixture(%{members: [user]})
+    %{conn: log_in_user(conn, user), user: user, group: group}
+  end
+
+  @doc """
   Setup helper that registers and logs in users.
 
       setup :register_and_log_in_user

@@ -7,14 +7,12 @@ defmodule SecretSantaWeb.GiftIdeaController do
     user = conn.assigns.current_user
 
     case GiftIdeas.create_gift_idea(user, gift_idea_params) do
-      {:ok, gift_idea} ->
-        conn
-        |> put_flash(:info, "Gift idea added successfully.")
-        |> redirect(to: Routes.home_path(conn, :show))
+      {:ok, _gift_idea} ->
+        conn |> redirect(to: Routes.home_path(conn, :show))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
+      {:error, %Ecto.Changeset{}} ->
         conn
-        |> put_flash(:error, "There was an error adding your gift idea")
+        |> put_flash(:error, "⚠️ Error adding gift idea")
         |> redirect(to: Routes.home_path(conn, :show))
       end
   end
@@ -24,7 +22,7 @@ defmodule SecretSantaWeb.GiftIdeaController do
     {:ok, _gift_idea} = GiftIdeas.delete_gift_idea(gift_idea)
 
     conn
-    |> put_flash(:info, "Gift idea deleted successfully.")
-    |> redirect(to: Routes.home_path(conn, :index))
+    |> put_flash(:info, "🚮 Gift idea deleted!")
+    |> redirect(to: Routes.home_path(conn, :show))
   end
 end
