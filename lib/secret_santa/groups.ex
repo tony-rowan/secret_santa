@@ -8,7 +8,8 @@ defmodule SecretSanta.Groups do
 
   alias SecretSanta.Repo
   alias SecretSanta.Accounts.User
-  alias SecretSanta.Groups.{Group, GroupMembership, JoinRequest, SecretSantaPair}
+  alias SecretSanta.Gifting.Mapping
+  alias SecretSanta.Groups.{Group, GroupMembership, JoinRequest}
 
   def load_group_members(group) do
     group |> Repo.preload(:users)
@@ -155,15 +156,15 @@ defmodule SecretSanta.Groups do
   def get_secret_santa_for_user(_user, nil), do: false
 
   def get_secret_santa_for_user(user, group) do
-    pairing = Repo.one(
-      from pair in SecretSantaPair,
-      where: pair.group_id == ^group.id,
-      where: pair.user_a_id == ^user.id,
-      preload: [user_b: [:gift_ideas]]
+    mapping = Repo.one(
+      from mapping in Mapping,
+      where: mapping.group_id == ^group.id,
+      where: mapping.user_id == ^user.id,
+      preload: [recipient: [:gift_ideas]]
     )
 
-    if pairing do
-      pairing.user_b
+    if mapping do
+      mapping.recipient
     else
       nil
     end
@@ -185,14 +186,14 @@ defmodule SecretSanta.Groups do
   end
 
   defp start_secret_santa(%Group{} = group, group_member_ids) do
-    pairs = group_member_ids
+    mapping = group_member_ids
     |> Enum.zip([List.last(group_member_ids) | group_member_ids])
-    |> Enum.map(fn {a, b} ->
-      %SecretSantaPair{user_a_id: a, user_b_id: b, group_id: group.id}
+    |> Enum.map(fn {from, to} ->
+      %Mapping{user_id: from, recipient_id: to, group_id: group.id}
     end)
 
     Group.changeset(group, %{})
-    |> put_assoc(:secret_santa_pairs, pairs)
+    |> put_assoc(:mappings, mapping)
     |> Repo.update()
   end
 end

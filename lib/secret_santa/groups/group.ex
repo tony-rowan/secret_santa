@@ -2,8 +2,8 @@ defmodule SecretSanta.Groups.Group do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias SecretSanta.Gifting.Mapping
   alias SecretSanta.Groups.GroupMembership
-  alias SecretSanta.Groups.SecretSantaPair
 
   schema "groups" do
     field :join_code, :string
@@ -12,7 +12,7 @@ defmodule SecretSanta.Groups.Group do
 
     has_many :group_memberships, GroupMembership
     has_many :users, through: [:group_memberships, :user]
-    has_many :secret_santa_pairs, SecretSantaPair
+    has_many :mappings, Mapping
 
     timestamps()
   end

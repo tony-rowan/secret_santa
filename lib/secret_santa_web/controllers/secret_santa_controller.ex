@@ -7,7 +7,7 @@ defmodule SecretSantaWeb.SecretSantaController do
 
   def start(conn, _params) do
     user = conn.assigns.current_user
-    group = Groups.get_group_for_user(user) |> Repo.preload(:secret_santa_pairs)
+    group = Groups.get_group_for_user(user) |> Repo.preload(:mappings)
 
     case Groups.start_secret_santa(group) do
       {:ok, _} ->
