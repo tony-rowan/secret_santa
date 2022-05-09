@@ -1,20 +1,19 @@
 defmodule SecretSanta.GroupsFixtures do
-  @moduledoc """
-  This module defines test helpers for creating
-  entities via the `SecretSanta.Groups` context.
-  """
 
-  @doc """
-  Generate a group_membership.
-  """
-  def group_membership_fixture(attrs \\ %{}) do
-    {:ok, group_membership} =
-      attrs
-      |> Enum.into(%{
-        role: "some role"
-      })
-      |> SecretSanta.Groups.create_group_membership()
+  alias SecretSanta.Groups
 
-    group_membership
+  def unique_group_join_code, do: "join_code_#{System.unique_integer([:positive])}"
+
+  def group_fixture(attrs \\ %{}) do
+    user = SecretSanta.AccountsFixtures.user_fixture()
+
+    {:ok, group} =
+      Groups.create_group(user, Enum.into(attrs, %{
+        join_code: unique_group_join_code(),
+        name: "Group Name",
+        rules: "Group Rules"
+      }))
+
+    group
   end
 end

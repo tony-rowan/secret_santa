@@ -30,25 +30,4 @@ defmodule SecretSanta.AccountsFixtures do
     [_, token | _] = String.split(captured_email.text_body, "[TOKEN]")
     token
   end
-
-  @doc """
-  Generate a unique group join_code.
-  """
-  def unique_group_join_code, do: "some join_code#{System.unique_integer([:positive])}"
-
-  @doc """
-  Generate a group.
-  """
-  def group_fixture(attrs \\ %{}) do
-    {:ok, group} =
-      attrs
-      |> Enum.into(%{
-        join_code: unique_group_join_code(),
-        name: "some name",
-        rules: "some rules"
-      })
-      |> SecretSanta.Accounts.create_group()
-
-    group
-  end
 end
