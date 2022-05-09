@@ -8,7 +8,7 @@ defmodule SecretSantaWeb.GiftIdeaControllerTest do
   @create_attrs %{idea: "Some Gift Idea"}
   @invalid_attrs %{idea: nil}
 
-  describe "create gift_idea" do
+  describe "POST /gift_ideas" do
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, Routes.gift_idea_path(conn, :create), gift_idea: @create_attrs)
 
@@ -26,11 +26,11 @@ defmodule SecretSantaWeb.GiftIdeaControllerTest do
 
       conn = get(conn, Routes.home_path(conn, :show))
 
-      refute html_response(conn, 200) =~ "Some Gift Idea"
+      assert get_flash(conn, :error) == "⚠️ Error adding gift idea"
     end
   end
 
-  describe "delete gift_idea" do
+  describe "DELETE /gift_ideas/:id" do
     test "deletes chosen gift_idea", %{conn: conn, user: user} do
       gift_idea = gift_idea_fixture(%{user: user, idea: "Some Gift Idea"})
 
@@ -40,9 +40,8 @@ defmodule SecretSantaWeb.GiftIdeaControllerTest do
 
       conn = get(conn, Routes.home_path(conn, :show))
 
-      response = html_response(conn, 200)
-        assert response =~ "🚮 Gift idea deleted!"
-      refute response =~ "Some Gift Idea"
+      assert get_flash(conn, :info) == "🚮 Gift idea deleted!"
+      refute html_response(conn, 200) =~ "Some Gift Idea"
     end
   end
 end
