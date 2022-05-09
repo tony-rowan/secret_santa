@@ -1,7 +1,4 @@
 defmodule SecretSanta.GiftIdeas do
-  @moduledoc """
-  The GiftIdeas context.
-  """
 
   import Ecto.Query, warn: false
   import Ecto.Changeset
@@ -9,6 +6,8 @@ defmodule SecretSanta.GiftIdeas do
   alias SecretSanta.Repo
 
   alias SecretSanta.GiftIdeas.GiftIdea
+
+  def get_gift_idea!(id), do: Repo.get!(GiftIdea, id)
 
   def empty_changeset() do
     GiftIdea.changeset(%GiftIdea{}, %{})
@@ -22,5 +21,9 @@ defmodule SecretSanta.GiftIdeas do
     GiftIdea.changeset(%GiftIdea{}, gift_idea_attrs)
     |> put_change(:user_id, user.id)
     |> Repo.insert()
+  end
+
+  def delete_gift_idea(%GiftIdea{} = gift_idea) do
+    Repo.delete(gift_idea)
   end
 end
