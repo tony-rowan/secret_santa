@@ -59,11 +59,12 @@ defmodule SecretSanta.AccountsTest do
     end
 
     test "validates email and password when given" do
-      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "not valid"})
+      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "---"})
 
       assert %{
+               name: ["can't be blank"],
                email: ["must have the @ sign and no spaces"],
-               password: ["should be at least 12 character(s)"]
+               password: ["should be at least 6 character(s)"]
              } = errors_on(changeset)
     end
 
@@ -97,7 +98,7 @@ defmodule SecretSanta.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email]
+      assert changeset.required == [:password, :email, :name]
     end
 
     test "allows fields to be set" do
@@ -262,12 +263,12 @@ defmodule SecretSanta.AccountsTest do
     test "validates password", %{user: user} do
       {:error, changeset} =
         Accounts.update_user_password(user, valid_user_password(), %{
-          password: "not valid",
+          password: "---",
           password_confirmation: "another"
         })
 
       assert %{
-               password: ["should be at least 12 character(s)"],
+               password: ["should be at least 6 character(s)"],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end
@@ -471,12 +472,12 @@ defmodule SecretSanta.AccountsTest do
     test "validates password", %{user: user} do
       {:error, changeset} =
         Accounts.reset_user_password(user, %{
-          password: "not valid",
-          password_confirmation: "another"
+          password: "---",
+          password_confirmation: "diff"
         })
 
       assert %{
-               password: ["should be at least 12 character(s)"],
+               password: ["should be at least 6 character(s)"],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end
@@ -503,64 +504,6 @@ defmodule SecretSanta.AccountsTest do
   describe "inspect/2" do
     test "does not include password" do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""
-    end
-  end
-
-  describe "groups" do
-    alias SecretSanta.Accounts.Group
-
-    import SecretSanta.AccountsFixtures
-
-    @invalid_attrs %{join_code: nil, name: nil, rules: nil}
-
-    test "list_groups/0 returns all groups" do
-      group = group_fixture()
-      assert Accounts.list_groups() == [group]
-    end
-
-    test "get_group!/1 returns the group with given id" do
-      group = group_fixture()
-      assert Accounts.get_group!(group.id) == group
-    end
-
-    test "create_group/1 with valid data creates a group" do
-      valid_attrs = %{join_code: "some join_code", name: "some name", rules: "some rules"}
-
-      assert {:ok, %Group{} = group} = Accounts.create_group(valid_attrs)
-      assert group.join_code == "some join_code"
-      assert group.name == "some name"
-      assert group.rules == "some rules"
-    end
-
-    test "create_group/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_group(@invalid_attrs)
-    end
-
-    test "update_group/2 with valid data updates the group" do
-      group = group_fixture()
-      update_attrs = %{join_code: "some updated join_code", name: "some updated name", rules: "some updated rules"}
-
-      assert {:ok, %Group{} = group} = Accounts.update_group(group, update_attrs)
-      assert group.join_code == "some updated join_code"
-      assert group.name == "some updated name"
-      assert group.rules == "some updated rules"
-    end
-
-    test "update_group/2 with invalid data returns error changeset" do
-      group = group_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_group(group, @invalid_attrs)
-      assert group == Accounts.get_group!(group.id)
-    end
-
-    test "delete_group/1 deletes the group" do
-      group = group_fixture()
-      assert {:ok, %Group{}} = Accounts.delete_group(group)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_group!(group.id) end
-    end
-
-    test "change_group/1 returns a group changeset" do
-      group = group_fixture()
-      assert %Ecto.Changeset{} = Accounts.change_group(group)
     end
   end
 end

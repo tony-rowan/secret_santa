@@ -77,6 +77,8 @@ defmodule SecretSanta.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
+  def register_user(attrs), do: register_user(attrs, nil)
+
   def register_user(attrs, nil) do
     %User{}
     |> User.registration_changeset(attrs)
