@@ -4,7 +4,7 @@ defmodule SecretSanta.GroupsFixtures do
 
   def group_fixture(attrs \\ %{}) do
     {admin, attrs} = Map.pop(attrs, :admin, SecretSanta.AccountsFixtures.user_fixture())
-    {members, attrs} = Map.pop(attrs, :members, [SecretSanta.AccountsFixtures.user_fixture()])
+    {members, attrs} = Map.pop(attrs, :members, [])
 
     {:ok, group} =
       Groups.create_group(admin, Enum.into(attrs, %{
