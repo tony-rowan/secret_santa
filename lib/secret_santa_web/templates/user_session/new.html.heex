@@ -14,7 +14,7 @@
   <%= label f, :password, class: "block" %>
   <%= password_input f, :password, required: true, class: "text-input mb-2" %>
 
-  <%= submit "Log in", class: "button mt-4" %>
+  <%= submit "Log In", class: "button mt-4" %>
 </.form>
 
 <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new),
