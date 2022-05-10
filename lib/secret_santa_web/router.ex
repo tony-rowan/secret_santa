@@ -54,7 +54,7 @@ defmodule SecretSantaWeb.Router do
 
     resources "/gift_ideas", GiftIdeaController, only: [:create, :delete]
 
-    post "/secret_santa", SecretSantaController, :start
+    resources "/mappings", MappingController, only: [:create]
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update

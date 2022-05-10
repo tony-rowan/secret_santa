@@ -17,7 +17,7 @@
         Secret Santas have not been drawn, yet!
       </p>
       <%= if @is_group_admin do %>
-        <%= button("Start Secret Santa!", to: Routes.secret_santa_path(@conn, :start), class: "button mx-auto") %>
+        <%= button("Start Secret Santa!", to: Routes.mapping_path(@conn, :create), class: "button mx-auto") %>
       <% else %>
         <p class="text-lg text-center">
           Check back later when an admin has started Secret Santa

@@ -1,10 +1,10 @@
-defmodule SecretSantaWeb.SecretSantaController do
+defmodule SecretSantaWeb.MappingController do
   use SecretSantaWeb, :controller
 
   alias SecretSanta.Groups
   alias SecretSanta.Gifting
 
-  def start(conn, _params) do
+  def create(conn, _params) do
     user = conn.assigns.current_user
     group = Groups.get_group_for_user(user)
 
