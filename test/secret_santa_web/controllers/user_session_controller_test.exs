@@ -11,7 +11,7 @@ defmodule SecretSantaWeb.UserSessionControllerTest do
     test "renders log in page", %{conn: conn} do
       conn = get(conn, Routes.user_session_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "Log in"
+      assert response =~ "Log In"
       assert response =~ "Register"
       assert response =~ "Forgot your password?"
     end
@@ -60,7 +60,7 @@ defmodule SecretSantaWeb.UserSessionControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "Log in"
+      assert response =~ "Log In"
       assert response =~ "Invalid email or password"
     end
   end
