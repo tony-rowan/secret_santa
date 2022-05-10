@@ -51,7 +51,8 @@ defmodule SecretSanta.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:secure_random, "~> 0.5"},
-      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
+      {:wallaby, "~> 0.29.0", runtime: false, only: :test}
     ]
   end
 

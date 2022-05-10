@@ -16,12 +16,14 @@ config :secret_santa, SecretSanta.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
-# We don't run a server during test. If one is required,
-# you can enable the server option below.
+# Enable the database sandbox
+config :secret_santa, :sandbox, Ecto.Adapters.SQL.Sandbox
+
+# We run a server in tests to allow for browser testing
 config :secret_santa, SecretSantaWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "ZsGwHzcZG/+DUlRy2EhipOF3f2ZQY/i1u1giwEmlLqj2boy+/+M2lUIVkkHVrJAN",
-  server: false
+  server: true
 
 # In test we don't send emails.
 config :secret_santa, SecretSanta.Mailer, adapter: Swoosh.Adapters.Test
@@ -31,3 +33,7 @@ config :logger, level: :warn
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# User Wallaby for browser level testing
+config :wallaby, driver: Wallaby.Chrome
+config :wallaby, otp_app: :secret_santa
