@@ -11,8 +11,28 @@ defmodule SecretSanta.FixtureCase do
     end
   end
 
+  alias Wallaby.Browser
+  alias Wallaby.Query
+
+  import SecretSanta.AccountsFixtures
+
+  def log_in(session) do
+    email = unique_user_email()
+    password = valid_user_password()
+    user_fixture(%{email: email, password: password})
+    log_in(session, email, password)
+  end
+
+  def log_in(session, email, password) do
+    session
+    |> Browser.visit("users/log_in")
+    |> Browser.fill_in(Query.text_field("Email"), with: email)
+    |> Browser.fill_in(Query.text_field("Password"), with: password)
+    |> Browser.click(Query.button("Log In"))
+  end
+
   def print_page_text(session) do
-    session |> Wallaby.Browser.text() |> IO.inspect()
+    session |> Browser.text() |> IO.inspect()
     session
   end
 
@@ -20,7 +40,7 @@ defmodule SecretSanta.FixtureCase do
   # TODO: Work out how to make this wait
   # TODO: Raise as an issue with Wallaby
   def assert_has_text(session, text) do
-    page_text = session |> Wallaby.Browser.text()
+    page_text = session |> Browser.text()
     assert page_text =~ text
     session
   end

@@ -6,7 +6,7 @@ defmodule SecretSanta.AccountsFixtures do
 
   def user_name, do: "John #{System.unique_integer()} Doe"
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
-  def valid_user_password, do: "hello world!"
+  def valid_user_password, do: "password"
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
