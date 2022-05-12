@@ -45,12 +45,13 @@ defmodule SecretSanta.Groups do
   end
 
   def get_group_for_user(user) do
-    Repo.one(from group in Group,
-      join: membership in GroupMembership,
-      on: membership.group_id == group.id,
-      where: membership.user_id == ^user.id,
-      order_by: membership.inserted_at,
-      limit: 1
+    Repo.one(
+      from group in Group,
+        join: membership in GroupMembership,
+        on: membership.group_id == group.id,
+        where: membership.user_id == ^user.id,
+        order_by: membership.inserted_at,
+        limit: 1
     )
   end
 
@@ -134,6 +135,7 @@ defmodule SecretSanta.Groups do
       changeset =
         change_join_request(%JoinRequest{}, join_request_attrs)
         |> add_error(:join_code, "Join Code '%{join_code}' is not valid", join_code: join_code)
+
       {:error, %{changeset | action: :insert}}
     end
   end
@@ -145,9 +147,9 @@ defmodule SecretSanta.Groups do
   def user_is_group_admin?(user, group) do
     Repo.exists?(
       from group_membership in GroupMembership,
-      where: group_membership.user_id == ^user.id,
-      where: group_membership.group_id == ^group.id,
-      where: group_membership.role == "admin"
+        where: group_membership.user_id == ^user.id,
+        where: group_membership.group_id == ^group.id,
+        where: group_membership.role == "admin"
     )
   end
 
@@ -156,12 +158,13 @@ defmodule SecretSanta.Groups do
   def get_secret_santa_for_user(_user, nil), do: false
 
   def get_secret_santa_for_user(user, group) do
-    mapping = Repo.one(
-      from mapping in Mapping,
-      where: mapping.group_id == ^group.id,
-      where: mapping.user_id == ^user.id,
-      preload: [recipient: [:gift_ideas]]
-    )
+    mapping =
+      Repo.one(
+        from mapping in Mapping,
+          where: mapping.group_id == ^group.id,
+          where: mapping.user_id == ^user.id,
+          preload: [recipient: [:gift_ideas]]
+      )
 
     if mapping do
       mapping.recipient

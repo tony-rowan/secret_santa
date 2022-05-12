@@ -1,5 +1,4 @@
 defmodule SecretSanta.GroupsFixtures do
-
   alias SecretSanta.Groups
 
   def group_fixture(attrs \\ %{}) do
@@ -7,10 +6,13 @@ defmodule SecretSanta.GroupsFixtures do
     {members, attrs} = Map.pop(attrs, :members, [])
 
     {:ok, group} =
-      Groups.create_group(admin, Enum.into(attrs, %{
-        name: "Group Name",
-        rules: "Group Rules"
-      }))
+      Groups.create_group(
+        admin,
+        Enum.into(attrs, %{
+          name: "Group Name",
+          rules: "Group Rules"
+        })
+      )
 
     for member <- members, do: Groups.create_group_membership(group, member)
 

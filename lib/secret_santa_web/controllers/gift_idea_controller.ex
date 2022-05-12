@@ -14,7 +14,7 @@ defmodule SecretSantaWeb.GiftIdeaController do
         conn
         |> put_flash(:error, "⚠️ Error adding gift idea")
         |> redirect(to: Routes.home_path(conn, :show))
-      end
+    end
   end
 
   def delete(conn, %{"id" => id}) do

@@ -1,5 +1,4 @@
 defmodule SecretSanta.GiftIdeas do
-
   import Ecto.Query, warn: false
   import Ecto.Changeset
 

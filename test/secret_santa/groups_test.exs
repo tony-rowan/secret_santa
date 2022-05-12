@@ -18,7 +18,9 @@ defmodule SecretSanta.GroupsTest do
     test "create_group/1 with valid data creates a group" do
       user = SecretSanta.AccountsFixtures.user_fixture()
       valid_attrs = %{name: "Group Name", rules: "Group Rules"}
-      assert {:ok, %Group{name: "Group Name", rules: "Group Rules"}} = Groups.create_group(user, valid_attrs)
+
+      assert {:ok, %Group{name: "Group Name", rules: "Group Rules"}} =
+               Groups.create_group(user, valid_attrs)
     end
 
     test "create_group/1 with invalid data returns error changeset" do
@@ -29,7 +31,9 @@ defmodule SecretSanta.GroupsTest do
     test "update_group/2 with valid data updates the group" do
       group = group_fixture()
       update_attrs = %{name: "Updated Name", rules: "Updated Rules"}
-      assert {:ok, %Group{name: "Updated Name", rules: "Updated Rules"}} = Groups.update_group(group, update_attrs)
+
+      assert {:ok, %Group{name: "Updated Name", rules: "Updated Rules"}} =
+               Groups.update_group(group, update_attrs)
     end
 
     test "update_group/2 with invalid data returns error changeset" do
@@ -51,6 +55,5 @@ defmodule SecretSanta.GroupsTest do
   end
 
   describe "group_memberships" do
-
   end
 end

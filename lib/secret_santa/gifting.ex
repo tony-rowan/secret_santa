@@ -15,9 +15,9 @@ defmodule SecretSanta.Gifting do
   defp get_randomly_ordered_group_members(group) do
     Repo.all(
       from group_membership in GroupMembership,
-      where: group_membership.group_id == ^group.id,
-      order_by: fragment("RANDOM()"),
-      select: group_membership.user_id
+        where: group_membership.group_id == ^group.id,
+        order_by: fragment("RANDOM()"),
+        select: group_membership.user_id
     )
   end
 
