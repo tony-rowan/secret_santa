@@ -53,7 +53,8 @@ defmodule SecretSanta.MixProject do
       {:secure_random, "~> 0.5"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:wallaby, "~> 0.29.0", runtime: false, only: :test},
-      {:git_hooks, "~> 0.7.0", only: [:dev], runtime: false}
+      {:git_hooks, "~> 0.7.0", only: [:dev], runtime: false},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 

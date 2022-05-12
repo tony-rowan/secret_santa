@@ -32,13 +32,13 @@ defmodule SecretSanta.FixtureCase do
   end
 
   def print_page_text(session) do
+    # credo:disable-for-next-line Credo.Check.Warning.IoInspect
     session |> Browser.text() |> IO.inspect()
     session
   end
 
   # Helper that still works if the text to find includes text in a span
-  # TODO: Work out how to make this wait
-  # TODO: Raise as an issue with Wallaby
+  # See more: https://github.com/elixir-wallaby/wallaby/issues/691
   def assert_has_text(session, text) do
     page_text = session |> Browser.text()
     assert page_text =~ text
